@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List Rendering</title>
+</head>
+<body>
+    
+    <ul id="sample-1">
+        <li v-for="item in items">
+            {{item.message}}
+        </li>
+    </ul>
+
+    <ul id="sample-2">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+    </ul>
+
+    <ul id="sample-3">
+        <li v-for="(key,value) in object">
+            {{ key }}:{{ value }}
+        </li>
+    </ul>
+
+    <div id="sample-4">
+        <span v-for="n of numbers">{{ n }}</span>
+    </div>
+
+    <div id="sample-5">
+        <ul>
+            <li v-for="todo in todos" v-if="!todo.isComplete">{{ todo.msg }}</li>
+        </ul>
+    </div>
+
+    <div id="todo-list-example">
+        <input
+            v-model="newTodoText"
+            v-on:keyup.enter="addNewTodo"
+            placeholder="Add a Todo"
+        >
+        <ul>
+            <li
+                is="todo-item"
+                v-for="(todo, index) in todos"
+                v-bind:key="todo.id"
+                v-bind:title="todo.title"
+                v-on:remove="todos.splice(index, 1)"
+            ></li>
+        </ul>
+    </div>
+    
+
+
+    <!-- script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+
+        let sample1 = new Vue({
+            el: '#sample-1',
+            data: {
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ]
+            }
+        })
+
+        let sample2 = new Vue({
+            el: '#sample-2',
+            data: {
+                parentMessage: 'Parent',
+                items: [
+                    { message: 'sample1' },
+                    { message: 'sample2' },
+                    { message: 'sample3' }
+                ]
+            }
+        })
+
+        let sample3 = new Vue({
+            el: '#sample-3',
+            data: {
+                object: {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    age: 30
+                }
+            }
+        })
+
+        let sample4 = new Vue({
+            el: '#sample-4',
+            data: {
+                numbers: [1, 2, 3, 4, 5]
+            }
+        })
+
+        let sample5 = new Vue({
+            el: '#sample-5',
+            data: {
+                todos: [
+                    {
+                        msg: 'foo',
+                        isComplete: true,
+                    },
+                    {
+                        msg: 'bar',
+                        isComplete: false,
+                    },
+                    {
+                        msg: 'baz',
+                        isComplete: true,
+                    },
+                    {
+                        msg: 'qux',
+                        isComplete: false,
+                    },
+                ]
+            }
+        })
+
+        Vue.component('todo-item', {
+            template: `
+                <li>
+                    {{ title }}
+                    <button v-on:click="$emit(\'remove\')">X</button>
+                </li>
+            `,
+            props: ['title']
+        })
+        let todoListExample = new Vue({
+            el: '#todo-list-example',
+            data: {
+                newTodoText: '',
+                todos: [
+                    {
+                        id: 1,
+                        title: 'Do the dishes',
+                    },
+                    {
+                        id: 2,
+                        title: 'Take out the trash',
+                    },
+                    {
+                        id: 3,
+                        title: 'Mow the lawn',
+                    },
+                ],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo: function(){
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText,
+                    })
+                    this.newTodoText = ''
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
