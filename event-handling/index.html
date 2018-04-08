@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event handling</title>
+</head>
+<body>
+  
+  <div id="sample-1">
+    <button v-on:click="counter += 1">Add 1</button>
+    <p>The button above has been clicked {{ counter }} times.</p>
+  </div>
+
+  <div id="sample-2">
+    <button v-on:click="greet">Greet</button>
+  </div>
+
+  <div id="sample-3">
+    <button v-on:click="say('hi')">Say hi</button>
+    <button v-on:click="say('what')">Say what</button>
+  </div>
+
+  <div id="sample-4">
+    <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+      Submit
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    
+    let sample1 = new Vue({
+      el: '#sample-1',
+      data: {
+        counter: 0
+      }
+    })
+
+    let sample2 = new Vue({
+      el: '#sample-2',
+      data: {
+        name: 'Vue.js'
+      },
+      methods: {
+        greet: function(event){
+          alert(`Hello ${this.name}`)
+          if(event){
+            alert(event.target.tagName)
+          }
+        }
+      }
+    })
+
+    let sample3 = new Vue({
+      el: '#sample-3',
+      methods: {
+        say: function(msg){
+          alert(msg)
+        }
+      }
+    })
+
+    let sample4 = new Vue({
+      el: '#sample-4',
+      methods: {
+        warn: function(msg, event) {
+          if(event) event.preventDefault()
+          alert(msg)
+          alert(event)
+        }
+      }
+    })
+
+  </script>
+</body>
+</html>
